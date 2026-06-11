@@ -1,0 +1,25 @@
+# docker-compose.yml
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vash_market_admin
+      POSTGRES_PASSWORD: 1234567890
+      POSTGRES_DB: vash_market_db
+    ports:
+      - "127.0.0.1:5454:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6340:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
