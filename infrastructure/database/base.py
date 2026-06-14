@@ -2,7 +2,7 @@
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import DateTime, func, String
 from datetime import datetime
-from uuid import uuid4, UUID
+from uuid import uuid4
 
 
 class Base(DeclarativeBase):
@@ -10,8 +10,8 @@ class Base(DeclarativeBase):
     
     __abstract__ = True
     
-    id: Mapped[UUID] = mapped_column(
-        String(36),  # UUID как строка
+    id: Mapped[str] = mapped_column(
+        String(36),
         primary_key=True,
         default=lambda: str(uuid4())
     )

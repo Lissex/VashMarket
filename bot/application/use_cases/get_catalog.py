@@ -1,5 +1,4 @@
 # bot/application/use_cases/get_catalog.py
-from uuid import UUID
 from typing import List, Dict, Any
 
 from infrastructure.database.repositories import (
@@ -9,8 +8,6 @@ from infrastructure.database.repositories import (
 
 
 class GetCatalogUseCase:
-    """Получение каталога товаров"""
-    
     def __init__(
         self,
         category_repo: CategoryRepository,
@@ -20,9 +17,7 @@ class GetCatalogUseCase:
         self.product_repo = product_repo
     
     async def get_categories(self) -> List[Dict[str, Any]]:
-        """Получить все активные категории"""
         categories = await self.category_repo.get_active_categories()
-        
         return [
             {
                 "id": cat.id,
@@ -34,10 +29,8 @@ class GetCatalogUseCase:
             for cat in categories
         ]
     
-    async def get_products_by_category(self, category_id: UUID) -> List[Dict[str, Any]]:
-        """Получить товары по категории"""
+    async def get_products_by_category(self, category_id: str) -> List[Dict[str, Any]]:  # 👈 str
         products = await self.product_repo.get_by_category(category_id)
-        
         return [
             {
                 "id": prod.id,
@@ -51,13 +44,10 @@ class GetCatalogUseCase:
             for prod in products
         ]
     
-    async def get_product_details(self, product_id: UUID) -> Dict[str, Any]:
-        """Получить детали товара"""
+    async def get_product_details(self, product_id: str) -> Dict[str, Any]:  # 👈 str
         product = await self.product_repo.get_by_id(product_id)
-        
         if not product:
             raise ValueError("Товар не найден")
-        
         return {
             "id": product.id,
             "name": product.name,

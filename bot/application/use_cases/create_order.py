@@ -1,5 +1,5 @@
 # bot/application/use_cases/create_order.py
-from uuid import UUID
+from uuid import UUID, uuid4
 from decimal import Decimal
 from datetime import datetime
 from typing import Optional
@@ -64,8 +64,8 @@ class CreateOrderUseCase:
         total_price = float(product.price)  # * quantity пока 1
         
         order_data = {
-            "user_id": user.id,
-            "product_id": product_id,
+            "user_id": str(user.id),  # 👈 преобразуем в строку
+            "product_id": str(product_id),  # 👈 преобразуем в строку
             "quantity": 1,
             "total_price": total_price,
             "status": OrderStatus.PENDING,
@@ -73,7 +73,8 @@ class CreateOrderUseCase:
             "customer_phone": customer_phone,
             "customer_address": customer_address,
             "comment": comment,
-            "is_confirmed_by_admin": False
+            "is_confirmed_by_admin": False,
+            "id": str(uuid4())  # 👈 добавляем ID как строку
         }
         
         order = await self.order_repo.create(order_data)
